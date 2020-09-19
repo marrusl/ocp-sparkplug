@@ -1,0 +1,54 @@
+---
+variant: fcos
+version: 1.0.0
+storage:
+  disks:
+  ### VAR LIB CONTAINERS
+  - device: /dev/vdb
+    wipe_table: true
+    partitions:
+    - label: "vlc.raid1.1"
+      number: 1
+      size_mib: 0
+      start_mib: 0
+
+  ### VAR LIB CONTAINERS
+  - device: /dev/vdc
+    wipe_table: true
+    partitions:
+    - label: "vlc.raid1.2"
+      number: 1
+      size_mib: 0
+      start_mib: 0
+
+  ### OTHER MPT
+  - device: /dev/vdd
+    wipe_table: true
+    partitions:
+    - label: "data.raid0.1"
+      number: 1
+      size_mib: 0
+      start_mib: 0
+
+  - device: /dev/vde
+    wipe_table: true
+    partitions:
+    - label: "data.raid0.2"
+      number: 1
+      size_mib: 0
+      start_mib: 0
+
+  raid:
+    # Create /var/lib/containers RAID device
+    - name: "vlc-raid0"
+      level: raid0
+      devices:
+        - /dev/disk/by-partlabel/vlc.raid1.1
+        - /dev/disk/by-partlabel/vlc.raid1.2
+
+    # Create the data RAID device
+    - name: "data-raid1"
+      level: raid1
+      devices:
+        - /dev/disk/by-partlabel/data.raid0.1
+        - /dev/disk/by-partlabel/data.raid0.2

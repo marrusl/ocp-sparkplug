@@ -1,0 +1,21 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  name: 99-worker-tang
+  labels:
+    machineconfiguration.openshift.io/role: worker
+    org.darkmuggle/supported: "unsupported"
+    org.darkmuggle/source: "https://github.com/darkmuggle/ocp-sparkplug"
+spec:
+  kernelArguments:
+    - "ip=dhcp"
+  config:
+    ignition:
+      version: 2.2.0
+    storage:
+      files:
+      - contents:
+          source: data:text/plain;base64,eyJ0IjoxLCJwaW5zIjp7InRhbmciOlt7InVybCI6Imh0dHBzOi8vdGFuZ2VyLXJoY29zLWRldmVsLnN2Yy5jaS5vcGVuc2hpZnQub3JnIiwidGhwIjoibnQ5NUJXYWgzeUNrdFVVSkM0X1ZWVzBxN0prIn1dfX0K
+        filesystem: root
+        mode: 420
+        path: /etc/clevis.json
